@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>SESA_WS</display-name>
+  <servlet>
+    <description>This method will validate if the patient exists on the system or not</description>
+    <display-name>Patient Validator</display-name>
+    <servlet-name>PatientValidation</servlet-name>
+    <servlet-class>server.PatientValidation</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This method will return an array of Physicians available in the hospital</description>
+    <display-name>Physician List Fetcher</display-name>
+    <servlet-name>PhysicianList</servlet-name>
+    <servlet-class>server.PhysicianList</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This method will create a schedule for the patient and return the confirmation ID</description>
+    <display-name>Schedule creator</display-name>
+    <servlet-name>scheduleCreator</servlet-name>
+    <servlet-class>server.CreateSchedule</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>PatientValidation</servlet-name>
+    <url-pattern>/auth/patientAuth</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PhysicianList</servlet-name>
+    <url-pattern>/physicianList</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>scheduleCreator</servlet-name>
+    <url-pattern>/createSchedule</url-pattern>
+  </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
