@@ -24,14 +24,16 @@ public class CreateSchedule extends HttpServlet {
 		String physicianName = request.getParameter("physicianName");
 		String specialtyName = request.getParameter("specialtyName");
 		String scheduleDate = request.getParameter("scheduleDate");
+		String comments = request.getParameter("comments");
 				
 		System.out.println(patientName);
 		System.out.println(patientId);
 		System.out.println(physicianName);
 		System.out.println(specialtyName);
 		System.out.println(scheduleDate);
+		System.out.println(comments);
 
-		if (confirmSchedule(patientName, patientId, physicianName, specialtyName, scheduleDate)) {
+		if (confirmSchedule(patientName, patientId, physicianName, specialtyName, scheduleDate, comments)) {
 			String schduleID = getCreatedScheduleID();
 			out.writeObject(schduleID);
 		} else {
@@ -48,9 +50,8 @@ public class CreateSchedule extends HttpServlet {
 			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "sesa_dba", "sesa123");			
 			
 			PreparedStatement ps = con
-					.prepareStatement(" SELECT SCHEDULE_ID\r\n " + 
-							"  FROM (SELECT SCHEDULE_ID FROM master_schedule ORDER BY 1)\r\n " + 
-							" WHERE ROWNUM = 1");
+					.prepareStatement(" SELECT max(SCHEDULE_ID)\r\n " + 
+							"  FROM master_schedule\r\n ");
 
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
@@ -64,13 +65,13 @@ public class CreateSchedule extends HttpServlet {
 		return scheduleID;
 	}
 
-	private boolean confirmSchedule(String patientName, String patientId, String physicianName, String specialtyName, String scheduleDate) {
+	private boolean confirmSchedule(String patientName, String patientId, String physicianName, String specialtyName, String scheduleDate, String comments) {
 		boolean status = false;
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "sesa_dba", "sesa123");
 
-			String sqlQuery = " insert into master_schedule(SCHEDULE_ID, PATIENT_ID, PATIENT_NAME, PHYSICIAN_NAME, SPECIALTY_NAME, SCHEDULE_DATE) values( " +
+			String sqlQuery = " insert into master_schedule(SCHEDULE_ID, PATIENT_ID, PATIENT_NAME, PHYSICIAN_NAME, SPECIALTY_NAME, SCHEDULE_DATE, COMMENTS) values( " +
 			" schdeule_sequence.nextval, " +
 			" ?, ?, ";
 			if(!physicianName.equals("")) {
@@ -78,7 +79,8 @@ public class CreateSchedule extends HttpServlet {
 			} else {
 				sqlQuery = sqlQuery + " ?, ?, ";
 			}
-			sqlQuery = sqlQuery + " to_date(?,'dd/mm/yyyy hh24:mi:ss')) ";
+			sqlQuery = sqlQuery + " to_date(?,'dd/mm/yyyy hh24:mi:ss') ";
+			sqlQuery = sqlQuery + " ,? ) ";
 			
 			PreparedStatement ps = con
 					.prepareStatement(sqlQuery);
@@ -87,6 +89,7 @@ public class CreateSchedule extends HttpServlet {
 			ps.setString(3, physicianName);
 			ps.setString(4, specialtyName);
 			ps.setString(5, scheduleDate);
+			ps.setString(6, comments);
 
 			ResultSet rs = ps.executeQuery();
 			status = rs.next();
