@@ -25,6 +25,12 @@
     <servlet-name>getSchedule</servlet-name>
     <servlet-class>server.GetSchedule</servlet-class>
   </servlet>
+  <servlet>
+    <description>This method will alert the hospital about the patient in emergency</description>
+    <display-name>Emergency Assistance</display-name>
+    <servlet-name>emergencyService</servlet-name>
+    <servlet-class>server.EmergencyService</servlet-class>
+  </servlet>
   
   <servlet-mapping>
     <servlet-name>PatientValidation</servlet-name>
@@ -41,6 +47,10 @@
   <servlet-mapping>
     <servlet-name>getSchedule</servlet-name>
     <url-pattern>/getSchedule</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>emergencyService</servlet-name>
+    <url-pattern>/emergencyService</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
