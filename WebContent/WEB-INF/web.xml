@@ -19,7 +19,12 @@
     <servlet-name>scheduleCreator</servlet-name>
     <servlet-class>server.CreateSchedule</servlet-class>
   </servlet>
-  
+  <servlet>
+    <description>used to register emergency details of patient</description>
+    <display-name>Emergency Registration</display-name>
+    <servlet-name>emgRegistration</servlet-name>
+    <servlet-class>server.RegEmgCntDetails</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>PatientValidation</servlet-name>
     <url-pattern>/auth/patientAuth</url-pattern>
@@ -31,6 +36,10 @@
   <servlet-mapping>
     <servlet-name>scheduleCreator</servlet-name>
     <url-pattern>/createSchedule</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>emgRegistration</servlet-name>
+    <url-pattern>/emgRegistration</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
